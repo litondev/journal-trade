@@ -10,5 +10,6 @@ Route::get('/', function () {
 
 Route::get('/trade',[TradeController::class,"index"]);
 Route::post('/trade',[TradeController::class,"store"]);
-Route::get("/trade/{trade}",[TradeController::class,"show"]);
 Route::put("/trade/{trade}",[TradeController::class,"update"]);
+Route::get("/trade/{trade}",[TradeController::class,"show"]);
+Route::put("/trade/done/{trade}",[TradeController::class,"done"]);

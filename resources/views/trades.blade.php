@@ -18,6 +18,8 @@
         </style>
     </head>
     <body>
+        <h2>TRADE FOREX($1000) AND CRYPTO($25)</h2>
+
         <div style="overflow: auto;max-height: 250px;margin-bottom: 10px">
             <table style="width: 100%">
                 <tr>
@@ -38,33 +40,40 @@
                     <td>{{ $item->asset }}</td>
                     <td>
                         @if($item->action === 'LONG')
-                            Buy
+                            <span style="font-weight: bold;color: green">Buy</span>
                         @elseif($item->action === 'SHORT')
-                            Sell
+                            <span style="font-weight: bold;color: danger">Sell</span>
                         @else 
                             Tidak Ada
                         @endif 
                     </td>
                     <td>
                         @if($item->status === 'PROSESS')
-                            PROSESS
+                            <span style="font-weight: bold;color: orange">PROSESS</span>
                         @else 
-                            SELESAI
+                            <span style="font-weight: bold;color: green">SELESAI</span>
                         @endif 
                     </td>
                     <td>
                         @if($item->result === 'NONE')
                             <span>Tidak Ada</span>
                         @elseif($item->result === 'WIN')
-                            <span style="color: green">MENANG</span>
+                            <span style="font-weight: bold;color: green">MENANG</span>
                         @else 
-                            <span style="color: red">KALAH</span>
+                            <span style="font-weight: bold;color: red">KALAH</span>
                         @endif 
                     </td>
                     <td>{{ $item->last_description ?? '-' }}</td>
                     <td>
-                        <a href="">Edit</a>
-                        <a href="">Selesikan</a>
+                        @if($item->status === 'PROSESS')
+                            <a href="{{ url('/trade/'.$item->id) }}">Edit</a>
+
+                            <form  id="form-done" action="{{ url('/trade/done/'.$item->id) }}" method="post">
+                                @csrf
+                                <input type="hidden" name="_method" value="put" />
+                                <a href="javascript:;" onclick="document.getElementById('form-done').submit();">Selesikan</a>
+                            </form>
+                        @endif
                     </td>
                 </tr> 
                 @endforeach 
@@ -85,40 +94,48 @@
         @endif 
         
         <form method="POST"
-            action="{{ url('/trade') }}"
+            action="{{ url('/trade'.( (isset($trade) && $trade) ? '/'.$trade->id : '')) }}"
             class="flex-container"
             style="margin-top: 10px">   
             @csrf
 
-            @if(isset($trade))
+            @if(isset($trade) && $trade)
                 <input type="hidden" name="_method" value="put" />
-            @endif
-                
-            <input type="hidden"
-                value="{{ $type }}"
-                name="type"/>
+
+                <input type="hidden"
+                    value="{{ $trade->type }}"
+                    name="type"/>
+            @else 
+                <input type="hidden"
+                    value="{{ $type }}"
+                    name="type"/>
+            @endif 
    
             <div>
                 Awal Trade <br/>
                 <input type="datetime-local" 
-                    name="start_trade">
+                    name="start_trade"
+                    value="{{ isset($trade) && $trade ? $trade->start_trade : ''}}">
             </div>
             
             <div>
                 Akhir Trade <br/>
                 <input type="datetime-local"
-                    name="end_trade">
+                    name="end_trade"
+                    value="{{ isset($trade) && $trade ? $trade->end_trade : ''}}">
             </div>
 
             <div>
                 Tanggal Edge <br/>
                 <input type="date" 
-                    name="edge_date">
+                    name="edge_date"
+                    value="{{ isset($trade) && $trade ? $trade->edge_date : ''}}">
             </div>
 
             <div>
                 Trade Yang Sama
-                <select name="is_same_trade">
+                <select name="is_same_trade"
+                    value="{{ isset($trade) && $trade ? $trade->is_same_trade : 'NO'}}">
                     <option value="NO">Tidak</option>
                     <option value="YES">Ya</option>
                 </select>
@@ -127,7 +144,8 @@
             <div>
                 Broker
                 <select  
-                    name="broker">
+                    name="broker"
+                    value="{{ isset($trade) && $trade ? $trade->broker : ( $type === 'FOREX' ? 'MIFX' : 'GATEIO' ) }}">
                     @if($type === "FOREX")
                         <option value="MIFX">Mifx</option>
                         <option value="OCTA">Octa</option>
@@ -143,7 +161,8 @@
             <div>
                 Waktu Trade 
                 <select
-                    name="time_trade">
+                    name="time_trade"
+                    value="{{ isset($trade) && $trade ? $trade->time_trade : 'MORNING'}}">
                     <option value="MORNING">Pagi</option>
                     <option value="EVENING">Siang</option>
                     <option value="NIGHT">Malam</option>
@@ -153,7 +172,8 @@
             <div>
                 Asset 
                 <select 
-                    name="asset">
+                    name="asset"
+                    value="{{ isset($trade) && $trade ? $trade->asset : ( $type === 'FOREX' ? 'GOLD' : 'BTC' ) }}">
                     @if($type === "FOREX")  
                         <option value="GOLD">Gold</option>
                         <option value="OIL">Oil</option>
@@ -182,7 +202,8 @@
             <div>
                 Chart 
                 <select
-                    name="chart">
+                    name="chart"
+                    value="{{ isset($trade) && $trade ? $trade->chart : 'CANDLE'}}">
                     <option value="CANDLE">Candle</option>
                     <option value="HAKAI">Hakai</option>
                 </select>
@@ -194,7 +215,8 @@
                     Macd
                 </div> 
                 <div>
-                    <select name="tf1d_macd">
+                    <select name="tf1d_macd"
+                        value="{{ isset($trade) && $trade ? $trade->tf1d_macd : 'NONE'}}">
                         <option value="NONE">Tidak Digunakan</option>
                         <option value="LONG">Long</option>
                         <option value="SHORT">Short</option>
@@ -204,7 +226,8 @@
                     Bollinger Band 
                 </div> 
                 <div>
-                    <select name="tf1d_bl">
+                    <select name="tf1d_bl"
+                        value="{{ isset($trade) && $trade ? $trade->tf1d_bl : 'NONE'}}">
                         <option value="NONE">Tidak Digunakan</option>
                         <option value="LONG">Long</option>
                         <option value="SHORT">Short</option>
@@ -214,7 +237,8 @@
                     Rsi 
                 </div> 
                 <div>
-                    <select name="tf1d_rsi">
+                    <select name="tf1d_rsi"
+                        value="{{ isset($trade) && $trade ? $trade->tf1d_rsi : 'NONE'}}">
                         <option value="NONE">Tidak Digunakan</option>
                         <option value="LONG">Long</option>
                         <option value="SHORT">Short</option>
@@ -229,7 +253,8 @@
                     Macd
                 </div> 
                 <div>
-                    <select name="tf4h_macd">
+                    <select name="tf4h_macd"
+                        value="{{ isset($trade) && $trade ? $trade->tf4h_macd : 'NONE'}}">
                         <option value="NONE">Tidak Digunakan</option>
                         <option value="LONG">Long</option>
                         <option value="SHORT">Short</option>
@@ -239,7 +264,8 @@
                     Bollinger Band 
                 </div> 
                 <div>
-                    <select name="tf4h_bl">
+                    <select name="tf4h_bl"
+                        value="{{ isset($trade) && $trade ? $trade->tf4h_bl : 'NONE'}}">
                         <option value="NONE">Tidak Digunakan</option>
                         <option value="LONG">Long</option>
                         <option value="SHORT">Short</option>
@@ -249,7 +275,8 @@
                     Rsi 
                 </div> 
                 <div>
-                    <select name="tf4h_rsi">
+                    <select name="tf4h_rsi"
+                        value="{{ isset($trade) && $trade ? $trade->tf4h_rsi : 'NONE'}}">
                         <option value="NONE">Tidak Digunakan</option>
                         <option value="LONG">Long</option>
                         <option value="SHORT">Short</option>
@@ -264,7 +291,8 @@
                     Macd
                 </div> 
                 <div>
-                    <select name="tf1h_macd">
+                    <select name="tf1h_macd"
+                        value="{{ isset($trade) && $trade ? $trade->tf1h_macd : 'NONE'}}">
                         <option value="NONE">Tidak Digunakan</option>
                         <option value="LONG">Long</option>
                         <option value="SHORT">Short</option>
@@ -274,7 +302,8 @@
                     Bollinger Band 
                 </div> 
                 <div>
-                    <select name="tf1h_bl">
+                    <select name="tf1h_bl"
+                        value="{{ isset($trade) && $trade ? $trade->tf1h_bl : 'NONE'}}">
                         <option value="NONE">Tidak Digunakan</option>
                         <option value="LONG">Long</option>
                         <option value="SHORT">Short</option>
@@ -284,7 +313,8 @@
                     Rsi 
                 </div> 
                 <div>
-                    <select name="tf1h_rsi">
+                    <select name="tf1h_rsi"
+                        value="{{ isset($trade) && $trade ? $trade->tf1h_rsi : 'NONE'}}">
                         <option value="NONE">Tidak Digunakan</option>
                         <option value="LONG">Long</option>
                         <option value="SHORT">Short</option>
@@ -299,7 +329,8 @@
                     Macd
                 </div> 
                 <div>
-                    <select name="tf15m_macd">
+                    <select name="tf15m_macd"
+                        value="{{ isset($trade) && $trade ? $trade->tf15m_macd : 'NONE'}}">
                         <option value="NONE">Tidak Digunakan</option>
                         <option value="LONG">Long</option>
                         <option value="SHORT">Short</option>
@@ -309,7 +340,8 @@
                     Bollinger Band 
                 </div> 
                 <div>
-                    <select name="tf15m_bl">
+                    <select name="tf15m_bl"
+                        value="{{ isset($trade) && $trade ? $trade->tf15m_bl : 'NONE'}}">
                         <option value="NONE">Tidak Digunakan</option>
                         <option value="LONG">Long</option>
                         <option value="SHORT">Short</option>
@@ -319,7 +351,8 @@
                     Rsi 
                 </div> 
                 <div>
-                    <select name="tf15m_rsi">
+                    <select name="tf15m_rsi"
+                        value="{{ isset($trade) && $trade ? $trade->tf15m_rsi : 'NONE'}}">
                         <option value="NONE">Tidak Digunakan</option>
                         <option value="LONG">Long</option>
                         <option value="SHORT">Short</option>
@@ -334,7 +367,8 @@
                     Macd
                 </div> 
                 <div>
-                    <select name="tf5m_macd">
+                    <select name="tf5m_macd"
+                        value="{{ isset($trade) && $trade ? $trade->tf5m_macd : 'NONE'}}">
                         <option value="NONE">Tidak Digunakan</option>
                         <option value="LONG">Long</option>
                         <option value="SHORT">Short</option>
@@ -344,7 +378,8 @@
                     Bollinger Band 
                 </div> 
                 <div>
-                    <select name="tf5m_bl">
+                    <select name="tf5m_bl"
+                        value="{{ isset($trade) && $trade ? $trade->tf5m_bl : 'NONE'}}">
                         <option value="NONE">Tidak Digunakan</option>
                         <option value="LONG">Long</option>
                         <option value="SHORT">Short</option>
@@ -354,7 +389,8 @@
                     Rsi 
                 </div> 
                 <div>
-                    <select name="tf5m_rsi">
+                    <select name="tf5m_rsi"
+                        value="{{ isset($trade) && $trade ? $trade->tf5m_rsi : 'NONE'}}">
                         <option value="NONE">Tidak Digunakan</option>
                         <option value="LONG">Long</option>
                         <option value="SHORT">Short</option>
@@ -364,7 +400,8 @@
 
             <div>
                 Aksi <br/>
-                <select name="action">
+                <select name="action"
+                    value="{{ isset($trade) && $trade ? $trade->action : 'NONE'}}">
                     <option value="NONE">Tidak Ada</option>
                     <option value="LONG">Long</option>
                     <option value="SHORT">Short</option>
@@ -374,13 +411,14 @@
             <div>
                 Keterangan Awal <br/>
                 <textarea
+                    value="{{ isset($trade) && $trade ? $trade->start_description : ''}}"
                     name="start_description"></textarea>
             </div>
 
             <div>
                 Margin Trade <br/>
                 <input type="numeric"
-                    value="0.00"
+                    value="{{ isset($trade) && $trade ? $trade->margin_trade : 0.00}}"
                     name="margin_trade">
             </div>
 
@@ -388,7 +426,7 @@
             <div>
                 Lot Trade <br/>
                 <input type="numeric"
-                    value="0.00"
+                    value="{{ isset($trade) && $trade ? $trade->lot_trade : 0.00}}"
                     name="lot_trade">
             </div>
             @endif
@@ -397,7 +435,7 @@
             <div>
                 Lev Trade <br/>
                 <input type="numeric"
-                    value="0.00"
+                    value="{{ isset($trade) && $trade ? $trade->lev_trade : 0.00}}"
                     name="lev_trade">
             </div>
             @endif
@@ -405,13 +443,14 @@
             <div>
                 Sl Persentase <br/>
                 <input type="numeric"
-                    value="0.00"
+                    value="{{ isset($trade) && $trade ? $trade->sl_percentage : 0.00}}"
                     name="sl_percentage">
             </div>
 
             <div>
                 Hasil <br/>
-                <select name="result">
+                <select name="result"
+                    value="{{ isset($trade) && $trade ? $trade->result : 'NONE'}}">
                     <option value="NONE">Tidak Ada</option>
                     <option value="LOSS">Kalah</option>
                     <option value="WIN">Menang</option>
@@ -421,20 +460,21 @@
             <div>
                 Menang Persentase <br/>
                 <input type="numeric"
-                    value="0.00"
+                    value="{{ isset($trade) && $trade ? $trade->win_percentage : 0.00}}"
                     name="win_percentage">
             </div>
 
             <div>
                 Kalah Persentase <br/>
                 <input type="numeric"
-                    value="0.00"
+                    value="{{ isset($trade) && $trade ? $trade->lose_percentage : 0.00}}"
                     name="lose_percentage">
             </div>
 
             <div>
                 Keterangan Akhir <br/>
                 <textarea
+                    value="{{ isset($trade) && $trade ? $trade->margin_trade : 0.00}}"
                     name="last_description"></textarea>
             </div>
 
@@ -442,5 +482,47 @@
                 <button type="submit">Kirim</button>
             </div>
         </form>
+
+        <div class="flex-container">
+            <div>
+                <b>Cyrpto</b> 
+                <div>
+                    Total Trade <br/>
+                    {{ $crypto_total_trade}}
+                </div>
+                <div>
+                    Win <br/>
+                    {{ $crypto_win_trade }}
+                </div>
+                <div>
+                    Lose <br/>
+                    {{ $crypto_loss_trade }}
+                </div>
+                <div>
+                    Win Rate <br/>
+                    {{ $crypto_win_rate }}
+                </div>
+            </div>
+
+            <div>
+                <b>Forex</b> 
+                <div>
+                    Total Trade <br/>
+                    {{ $forex_total_trade}}
+                </div>
+                <div>
+                    Win <br/>
+                    {{ $forex_win_trade }}
+                </div>
+                <div>
+                    Lose <br/>
+                    {{ $forex_loss_trade }}
+                </div>
+                <div>
+                    Win Rate <br/>
+                    {{ $forex_win_rate }}
+                </div>
+            </div>
+        </div>
     </body>
 </html>
