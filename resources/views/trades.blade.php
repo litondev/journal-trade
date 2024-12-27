@@ -134,10 +134,11 @@
 
             <div>
                 Trade Yang Sama
-                <select name="is_same_trade"
-                    value="{{ isset($trade) && $trade ? $trade->is_same_trade : 'NO'}}">
-                    <option value="NO">Tidak</option>
-                    <option value="YES">Ya</option>
+                <select name="is_same_trade">
+                    <option value="NO"
+                        {{ (isset($trade) && $trade) ? ($trade->is_same_trade === 'NO' ? 'selected' : '') : ''}}>Tidak</option>
+                    <option value="YES"
+                    {{ (isset($trade) && $trade) ? ($trade->is_same_trade === 'YES' ? 'selected' : '') : ''}}>Ya</option>
                 </select>
             </div>
 
@@ -145,15 +146,20 @@
                 Broker
                 <select  
                     name="broker"
-                    value="{{ isset($trade) && $trade ? $trade->broker : ( $type === 'FOREX' ? 'MIFX' : 'GATEIO' ) }}">
                     @if($type === "FOREX")
-                        <option value="MIFX">Mifx</option>
-                        <option value="OCTA">Octa</option>
-                        <option value="FINEX">Finex</option>
+                        <option value="MIFX">
+                            {{ (isset($trade) && $trade) ? ($trade->broker === 'MIFX' ? 'selected' : '') : ''}}>Mifx</option>
+                        <option value="OCTA"
+                            {{ (isset($trade) && $trade) ? ($trade->broker === 'OCTA' ? 'selected' : '') : ''}}>Octa</option>
+                        <option value="FINEX"
+                            {{ (isset($trade) && $trade) ? ($trade->broker === 'FINEX' ? 'selected' : '') : ''}}>Finex</option>
                     @else 
-                        <option value="GATEIO">Gate Io</option>
-                        <option value="JUPITER">Jupiter</option>
-                        <option value="BINANCE">Binance</option>
+                        <option value="GATEIO"
+                            {{ (isset($trade) && $trade) ? ($trade->broker === 'GATEIO' ? 'selected' : '') : ''}}>Gate Io</option>
+                        <option value="JUPITER"
+                            {{ (isset($trade) && $trade) ? ($trade->broker === 'JUPITER' ? 'selected' : '') : ''}}>Jupiter</option>
+                        <option value="BINANCE"
+                            {{ (isset($trade) && $trade) ? ($trade->broker === 'BINANCE' ? 'selected' : '') : ''}}>Binance</option>
                     @endif
                 </select>
             </div>
@@ -161,40 +167,59 @@
             <div>
                 Waktu Trade 
                 <select
-                    name="time_trade"
-                    value="{{ isset($trade) && $trade ? $trade->time_trade : 'MORNING'}}">
-                    <option value="MORNING">Pagi</option>
-                    <option value="EVENING">Siang</option>
-                    <option value="NIGHT">Malam</option>
+                    name="time_trade">
+                    <option value="MORNING"
+                        {{ (isset($trade) && $trade) ? ($trade->time_trade === 'MORNING' ? 'selected' : '') : ''}}>Pagi</option>
+                    <option value="EVENING"
+                        {{ (isset($trade) && $trade) ? ($trade->time_trade === 'EVENING' ? 'selected' : '') : ''}}>Siang</option>
+                    <option value="NIGHT"
+                        {{ (isset($trade) && $trade) ? ($trade->time_trade === 'NIGHT' ? 'selected' : '') : ''}}>Malam</option>
                 </select>
             </div>
 
             <div>
                 Asset 
                 <select 
-                    name="asset"
-                    value="{{ isset($trade) && $trade ? $trade->asset : ( $type === 'FOREX' ? 'GOLD' : 'BTC' ) }}">
+                    name="asset">
                     @if($type === "FOREX")  
-                        <option value="GOLD">Gold</option>
-                        <option value="OIL">Oil</option>
-                        <option value="SILVER">Silver</option>
+                        <option value="GOLD"
+                            {{ (isset($trade) && $trade) ? ($trade->asset === 'GOLD' ? 'selected' : '') : ''}}>Gold</option>
+                        <option value="OIL"
+                            {{ (isset($trade) && $trade) ? ($trade->asset === 'OIL' ? 'selected' : '') : ''}}>Oil</option>
+                        <option value="SILVER"
+                            {{ (isset($trade) && $trade) ? ($trade->asset === 'SILVER' ? 'selected' : '') : ''}}>Silver</option>
                     @else 
-                        <option value="BTC">Btc</option>
-                        <option value="ETH">Eth</option>
-                        <option value="SOL">Sol</option>
+                        <option value="BTC"
+                            {{ (isset($trade) && $trade) ? ($trade->asset === 'BTC' ? 'selected' : '') : ''}}>Btc</option>
+                        <option value="ETH"
+                            {{ (isset($trade) && $trade) ? ($trade->asset === 'ETH' ? 'selected' : '') : ''}}>Eth</option>
+                        <option value="SOL"
+                            {{ (isset($trade) && $trade) ? ($trade->asset === 'SOL' ? 'selected' : '') : ''}}>Sol</option>
 
-                        <option value="DOGE">Doge</option>
-                        <option value="BONK">Bonk</option>
-                        <option value="SHIB">Shib</option>
-                        <option value="FLOKI">Floki</option>
-                        <option value="PEPE">Pepe</option>
-                        <option value="PENGU">Pengu</option>
-                        <option value="BOME">Bome</option>
-                        <option value="SLERF">Slerf</option>
-                        <option value="MEW">Mew</option>
-                        <option value="CHILLGUY">ChillGuy</option>
-                        <option value="WIF">Wif</option>
-                        <option value="FARTCOIN">Fartcoin</option>
+                        <option value="DOGE"
+                            {{ (isset($trade) && $trade) ? ($trade->asset === 'DOGE' ? 'selected' : '') : ''}}>Doge</option>
+                        <option value="BONK"
+                            {{ (isset($trade) && $trade) ? ($trade->asset === 'BONK' ? 'selected' : '') : ''}}>Bonk</option>
+                        <option value="SHIB"
+                            {{ (isset($trade) && $trade) ? ($trade->asset === 'SHIB' ? 'selected' : '') : ''}}>Shib</option>
+                        <option value="FLOKI"
+                            {{ (isset($trade) && $trade) ? ($trade->asset === 'FLOKI' ? 'selected' : '') : ''}}>Floki</option>
+                        <option value="PEPE"
+                            {{ (isset($trade) && $trade) ? ($trade->asset === 'PEPE' ? 'selected' : '') : ''}}>Pepe</option>
+                        <option value="PENGU"
+                            {{ (isset($trade) && $trade) ? ($trade->asset === 'PENGU' ? 'selected' : '') : ''}}>Pengu</option>
+                        <option value="BOME"
+                            {{ (isset($trade) && $trade) ? ($trade->asset === 'BOME' ? 'selected' : '') : ''}}>Bome</option>
+                        <option value="SLERF"
+                            {{ (isset($trade) && $trade) ? ($trade->asset === 'SLERF' ? 'selected' : '') : ''}}>Slerf</option>
+                        <option value="MEW"
+                            {{ (isset($trade) && $trade) ? ($trade->asset === 'MEW' ? 'selected' : '') : ''}}>Mew</option>
+                        <option value="CHILLGUY"
+                            {{ (isset($trade) && $trade) ? ($trade->asset === 'CHILLGUY' ? 'selected' : '') : ''}}>ChillGuy</option>
+                        <option value="WIF"
+                            {{ (isset($trade) && $trade) ? ($trade->asset === 'WIF' ? 'selected' : '') : ''}}>Wif</option>
+                        <option value="FARTCOIN"
+                            {{ (isset($trade) && $trade) ? ($trade->asset === 'FARTCOIN' ? 'selected' : '') : ''}}>Fartcoin</option>
                     @endif  
                 </select>
             </div>
@@ -204,8 +229,10 @@
                 <select
                     name="chart"
                     value="{{ isset($trade) && $trade ? $trade->chart : 'CANDLE'}}">
-                    <option value="CANDLE">Candle</option>
-                    <option value="HAKAI">Hakai</option>
+                    <option value="CANDLE"
+                        {{ (isset($trade) && $trade) ? ($trade->chart === 'CANDLE' ? 'selected' : '') : ''}}>Candle</option>
+                    <option value="HAKAI"
+                        {{ (isset($trade) && $trade) ? ($trade->chart === 'HAKAI' ? 'selected' : '') : ''}}>Hakai</option>
                 </select>
             </div>
 
@@ -215,33 +242,39 @@
                     Macd
                 </div> 
                 <div>
-                    <select name="tf1d_macd"
-                        value="{{ isset($trade) && $trade ? $trade->tf1d_macd : 'NONE'}}">
-                        <option value="NONE">Tidak Digunakan</option>
-                        <option value="LONG">Long</option>
-                        <option value="SHORT">Short</option>
+                    <select name="tf1d_macd">
+                        <option value="NONE"
+                            {{ (isset($trade) && $trade) ? ($trade->tf1d_macd === 'NONE' ? 'selected' : '') : ''}}>Tidak Digunakan</option>
+                        <option value="LONG"
+                            {{ (isset($trade) && $trade) ? ($trade->tf1d_macd === 'LONG' ? 'selected' : '') : ''}}>Long</option>
+                        <option value="SHORT"
+                            {{ (isset($trade) && $trade) ? ($trade->tf1d_macd === 'SHORT' ? 'selected' : '') : ''}}>Short</option>
                     </select>
                 </div>
                 <div>
                     Bollinger Band 
                 </div> 
                 <div>
-                    <select name="tf1d_bl"
-                        value="{{ isset($trade) && $trade ? $trade->tf1d_bl : 'NONE'}}">
-                        <option value="NONE">Tidak Digunakan</option>
-                        <option value="LONG">Long</option>
-                        <option value="SHORT">Short</option>
+                    <select name="tf1d_bl">
+                        <option value="NONE"
+                            {{ (isset($trade) && $trade) ? ($trade->tf1d_bl === 'NONE' ? 'selected' : '') : ''}}>Tidak Digunakan</option>
+                        <option value="LONG"
+                            {{ (isset($trade) && $trade) ? ($trade->tf1d_bl === 'LONG' ? 'selected' : '') : ''}}>Long</option>
+                        <option value="SHORT"
+                            {{ (isset($trade) && $trade) ? ($trade->tf1d_bl === 'SHORT' ? 'selected' : '') : ''}}>Short</option>
                     </select>
                 </div>
                 <div>
                     Rsi 
                 </div> 
                 <div>
-                    <select name="tf1d_rsi"
-                        value="{{ isset($trade) && $trade ? $trade->tf1d_rsi : 'NONE'}}">
-                        <option value="NONE">Tidak Digunakan</option>
-                        <option value="LONG">Long</option>
-                        <option value="SHORT">Short</option>
+                    <select name="tf1d_rsi">
+                        <option value="NONE"
+                            {{ (isset($trade) && $trade) ? ($trade->tf1d_rsi === 'NONE' ? 'selected' : '') : ''}}>Tidak Digunakan</option>
+                        <option value="LONG"
+                            {{ (isset($trade) && $trade) ? ($trade->tf1d_rsi === 'LONG' ? 'selected' : '') : ''}}>Long</option>
+                        <option value="SHORT"
+                            {{ (isset($trade) && $trade) ? ($trade->tf1d_rsi === 'SHORT' ? 'selected' : '') : ''}}>Short</option>
                     </select>
                 </div>
               
@@ -253,33 +286,39 @@
                     Macd
                 </div> 
                 <div>
-                    <select name="tf4h_macd"
-                        value="{{ isset($trade) && $trade ? $trade->tf4h_macd : 'NONE'}}">
-                        <option value="NONE">Tidak Digunakan</option>
-                        <option value="LONG">Long</option>
-                        <option value="SHORT">Short</option>
+                    <select name="tf4h_macd">
+                        <option value="NONE"
+                            {{ (isset($trade) && $trade) ? ($trade->tf4h_macd === 'NONE' ? 'selected' : '') : ''}}>Tidak Digunakan</option>
+                        <option value="LONG"
+                            {{ (isset($trade) && $trade) ? ($trade->tf4h_macd === 'LONG' ? 'selected' : '') : ''}}>Long</option>
+                        <option value="SHORT"
+                            {{ (isset($trade) && $trade) ? ($trade->tf4h_macd === 'SHORT' ? 'selected' : '') : ''}}>Short</option>
                     </select>
                 </div>
                 <div>
                     Bollinger Band 
                 </div> 
                 <div>
-                    <select name="tf4h_bl"
-                        value="{{ isset($trade) && $trade ? $trade->tf4h_bl : 'NONE'}}">
-                        <option value="NONE">Tidak Digunakan</option>
-                        <option value="LONG">Long</option>
-                        <option value="SHORT">Short</option>
+                    <select name="tf4h_bl">
+                        <option value="NONE"
+                            {{ (isset($trade) && $trade) ? ($trade->tf4h_bl === 'NONE' ? 'selected' : '') : ''}}>Tidak Digunakan</option>
+                        <option value="LONG"
+                            {{ (isset($trade) && $trade) ? ($trade->tf4h_bl === 'LONG' ? 'selected' : '') : ''}}>Long</option>
+                        <option value="SHORT"
+                            {{ (isset($trade) && $trade) ? ($trade->tf4h_bl === 'SHORT' ? 'selected' : '') : ''}}>Short</option>
                     </select>
                 </div>
                 <div>
                     Rsi 
                 </div> 
                 <div>
-                    <select name="tf4h_rsi"
-                        value="{{ isset($trade) && $trade ? $trade->tf4h_rsi : 'NONE'}}">
-                        <option value="NONE">Tidak Digunakan</option>
-                        <option value="LONG">Long</option>
-                        <option value="SHORT">Short</option>
+                    <select name="tf4h_rsi">
+                        <option value="NONE"
+                            {{ (isset($trade) && $trade) ? ($trade->tf4h_rsi === 'NONE' ? 'selected' : '') : ''}}>Tidak Digunakan</option>
+                        <option value="LONG"
+                            {{ (isset($trade) && $trade) ? ($trade->tf4h_rsi === 'LONG' ? 'selected' : '') : ''}}>Long</option>
+                        <option value="SHORT"
+                            {{ (isset($trade) && $trade) ? ($trade->tf4h_rsi === 'SHORT' ? 'selected' : '') : ''}}>Short</option>
                     </select>
                 </div>
               
@@ -291,33 +330,39 @@
                     Macd
                 </div> 
                 <div>
-                    <select name="tf1h_macd"
-                        value="{{ isset($trade) && $trade ? $trade->tf1h_macd : 'NONE'}}">
-                        <option value="NONE">Tidak Digunakan</option>
-                        <option value="LONG">Long</option>
-                        <option value="SHORT">Short</option>
+                    <select name="tf1h_macd">
+                        <option value="NONE"
+                            {{ (isset($trade) && $trade) ? ($trade->tf1h_macd === 'NONE' ? 'selected' : '') : ''}}>Tidak Digunakan</option>
+                        <option value="LONG"
+                            {{ (isset($trade) && $trade) ? ($trade->tf1h_macd === 'LONG' ? 'selected' : '') : ''}}>Long</option>
+                        <option value="SHORT"
+                            {{ (isset($trade) && $trade) ? ($trade->tf1h_macd === 'SHORT' ? 'selected' : '') : ''}}>Short</option>
                     </select>
                 </div>
                 <div>
                     Bollinger Band 
                 </div> 
                 <div>
-                    <select name="tf1h_bl"
-                        value="{{ isset($trade) && $trade ? $trade->tf1h_bl : 'NONE'}}">
-                        <option value="NONE">Tidak Digunakan</option>
-                        <option value="LONG">Long</option>
-                        <option value="SHORT">Short</option>
+                    <select name="tf1h_bl">
+                        <option value="NONE"
+                            {{ (isset($trade) && $trade) ? ($trade->tf1h_bl === 'NONE' ? 'selected' : '') : ''}}>Tidak Digunakan</option>
+                        <option value="LONG"
+                            {{ (isset($trade) && $trade) ? ($trade->tf1h_bl === 'LONG' ? 'selected' : '') : ''}}>Long</option>
+                        <option value="SHORT"
+                            {{ (isset($trade) && $trade) ? ($trade->tf1h_bl === 'SHORT' ? 'selected' : '') : ''}}>Short</option>
                     </select>
                 </div>
                 <div>
                     Rsi 
                 </div> 
                 <div>
-                    <select name="tf1h_rsi"
-                        value="{{ isset($trade) && $trade ? $trade->tf1h_rsi : 'NONE'}}">
-                        <option value="NONE">Tidak Digunakan</option>
-                        <option value="LONG">Long</option>
-                        <option value="SHORT">Short</option>
+                    <select name="tf1h_rsi">
+                        <option value="NONE"
+                            {{ (isset($trade) && $trade) ? ($trade->tf1h_rsi === 'NONE' ? 'selected' : '') : ''}}>Tidak Digunakan</option>
+                        <option value="LONG"
+                            {{ (isset($trade) && $trade) ? ($trade->tf1h_rsi === 'LONG' ? 'selected' : '') : ''}}>Long</option>
+                        <option value="SHORT"
+                            {{ (isset($trade) && $trade) ? ($trade->tf1h_rsi === 'SHORT' ? 'selected' : '') : ''}}>Short</option>
                     </select>
                 </div>
               
@@ -329,33 +374,39 @@
                     Macd
                 </div> 
                 <div>
-                    <select name="tf15m_macd"
-                        value="{{ isset($trade) && $trade ? $trade->tf15m_macd : 'NONE'}}">
-                        <option value="NONE">Tidak Digunakan</option>
-                        <option value="LONG">Long</option>
-                        <option value="SHORT">Short</option>
+                    <select name="tf15m_macd">
+                        <option value="NONE"
+                            {{ (isset($trade) && $trade) ? ($trade->tf15m_macd === 'NONE' ? 'selected' : '') : ''}}>Tidak Digunakan</option>
+                        <option value="LONG"
+                            {{ (isset($trade) && $trade) ? ($trade->tf15m_macd === 'LONG' ? 'selected' : '') : ''}}>Long</option>
+                        <option value="SHORT"
+                            {{ (isset($trade) && $trade) ? ($trade->tf15m_macd === 'SHORT' ? 'selected' : '') : ''}}>Short</option>
                     </select>
                 </div>
                 <div>
                     Bollinger Band 
                 </div> 
                 <div>
-                    <select name="tf15m_bl"
-                        value="{{ isset($trade) && $trade ? $trade->tf15m_bl : 'NONE'}}">
-                        <option value="NONE">Tidak Digunakan</option>
-                        <option value="LONG">Long</option>
-                        <option value="SHORT">Short</option>
+                    <select name="tf15m_bl">
+                        <option value="NONE"
+                            {{ (isset($trade) && $trade) ? ($trade->tf15m_macd === 'NONE' ? 'selected' : '') : ''}}>Tidak Digunakan</option>
+                        <option value="LONG"
+                            {{ (isset($trade) && $trade) ? ($trade->tf15m_macd === 'LONG' ? 'selected' : '') : ''}}>Long</option>
+                        <option value="SHORT"
+                            {{ (isset($trade) && $trade) ? ($trade->tf15m_macd === 'SHORT' ? 'selected' : '') : ''}}>Short</option>
                     </select>
                 </div>
                 <div>
                     Rsi 
                 </div> 
                 <div>
-                    <select name="tf15m_rsi"
-                        value="{{ isset($trade) && $trade ? $trade->tf15m_rsi : 'NONE'}}">
-                        <option value="NONE">Tidak Digunakan</option>
-                        <option value="LONG">Long</option>
-                        <option value="SHORT">Short</option>
+                    <select name="tf15m_rsi">
+                        <option value="NONE"
+                            {{ (isset($trade) && $trade) ? ($trade->tf15m_macd === 'NONE' ? 'selected' : '') : ''}}>Tidak Digunakan</option>
+                        <option value="LONG"
+                            {{ (isset($trade) && $trade) ? ($trade->tf15m_macd === 'LONG' ? 'selected' : '') : ''}}>Long</option>
+                        <option value="SHORT"
+                            {{ (isset($trade) && $trade) ? ($trade->tf15m_macd === 'SHORT' ? 'selected' : '') : ''}}>Short</option>
                     </select>
                 </div>
               
@@ -369,9 +420,12 @@
                 <div>
                     <select name="tf5m_macd"
                         value="{{ isset($trade) && $trade ? $trade->tf5m_macd : 'NONE'}}">
-                        <option value="NONE">Tidak Digunakan</option>
-                        <option value="LONG">Long</option>
-                        <option value="SHORT">Short</option>
+                        <option value="NONE"
+                            {{ (isset($trade) && $trade) ? ($trade->tf5m_macd === 'NONE' ? 'selected' : '') : ''}}>Tidak Digunakan</option>
+                        <option value="LONG"
+                            {{ (isset($trade) && $trade) ? ($trade->tf5m_macd === 'LONG' ? 'selected' : '') : ''}}>Long</option>
+                        <option value="SHORT"
+                            {{ (isset($trade) && $trade) ? ($trade->tf5m_macd === 'SHORT' ? 'selected' : '') : ''}}>Short</option>
                     </select>
                 </div>
                 <div>
@@ -380,9 +434,12 @@
                 <div>
                     <select name="tf5m_bl"
                         value="{{ isset($trade) && $trade ? $trade->tf5m_bl : 'NONE'}}">
-                        <option value="NONE">Tidak Digunakan</option>
-                        <option value="LONG">Long</option>
-                        <option value="SHORT">Short</option>
+                        <option value="NONE"
+                            {{ (isset($trade) && $trade) ? ($trade->tf5m_bl === 'NONE' ? 'selected' : '') : ''}}>Tidak Digunakan</option>
+                        <option value="LONG"
+                            {{ (isset($trade) && $trade) ? ($trade->tf5m_bl === 'LONG' ? 'selected' : '') : ''}}>Long</option>
+                        <option value="SHORT"
+                            {{ (isset($trade) && $trade) ? ($trade->tf5m_bl === 'SHORT' ? 'selected' : '') : ''}}>Short</option>
                     </select>
                 </div>
                 <div>
@@ -391,28 +448,32 @@
                 <div>
                     <select name="tf5m_rsi"
                         value="{{ isset($trade) && $trade ? $trade->tf5m_rsi : 'NONE'}}">
-                        <option value="NONE">Tidak Digunakan</option>
-                        <option value="LONG">Long</option>
-                        <option value="SHORT">Short</option>
+                        <option value="NONE"
+                            {{ (isset($trade) && $trade) ? ($trade->tf5m_rsi === 'NONE' ? 'selected' : '') : ''}}>Tidak Digunakan</option>
+                        <option value="LONG"
+                            {{ (isset($trade) && $trade) ? ($trade->tf5m_rsi === 'LONG' ? 'selected' : '') : ''}}>Long</option>
+                        <option value="SHORT"
+                            {{ (isset($trade) && $trade) ? ($trade->tf5m_rsi === 'SHORT' ? 'selected' : '') : ''}}>Short</option>
                     </select>
                 </div>
             </div>
 
             <div>
                 Aksi <br/>
-                <select name="action"
-                    value="{{ isset($trade) && $trade ? $trade->action : 'NONE'}}">
-                    <option value="NONE">Tidak Ada</option>
-                    <option value="LONG">Long</option>
-                    <option value="SHORT">Short</option>
+                <select name="action">
+                    <option value="NONE"
+                        {{ (isset($trade) && $trade) ? ($trade->action === 'NONE' ? 'selected' : '') : ''}}>Tidak Ada</option>
+                    <option value="LONG"
+                        {{ (isset($trade) && $trade) ? ($trade->action === 'LONG' ? 'selected' : '') : ''}}>Long</option>
+                    <option value="SHORT"
+                        {{ (isset($trade) && $trade) ? ($trade->action === 'SHORT' ? 'selected' : '') : ''}}>Short</option>
                 </select>
             </div>
             
             <div>
                 Keterangan Awal <br/>
                 <textarea
-                    value="{{ isset($trade) && $trade ? $trade->start_description : ''}}"
-                    name="start_description"></textarea>
+                    name="start_description">{{ isset($trade) && $trade ? $trade->start_description : ''}}</textarea>
             </div>
 
             <div>
@@ -450,10 +511,12 @@
             <div>
                 Hasil <br/>
                 <select name="result"
-                    value="{{ isset($trade) && $trade ? $trade->result : 'NONE'}}">
-                    <option value="NONE">Tidak Ada</option>
-                    <option value="LOSS">Kalah</option>
-                    <option value="WIN">Menang</option>
+                    <option value="NONE"
+                        {{ (isset($trade) && $trade) ? ($trade->result === 'NONE' ? 'selected' : '') : ''}}>Tidak Ada</option>
+                    <option value="LOSS"
+                        {{ (isset($trade) && $trade) ? ($trade->result === 'LOSS' ? 'selected' : '') : ''}}>Kalah</option>
+                    <option value="WIN"
+                        {{ (isset($trade) && $trade) ? ($trade->result === 'WIN' ? 'selected' : '') : ''}}>Menang</option>
                 </select>
             </div>
 
@@ -474,8 +537,7 @@
             <div>
                 Keterangan Akhir <br/>
                 <textarea
-                    value="{{ isset($trade) && $trade ? $trade->margin_trade : 0.00}}"
-                    name="last_description"></textarea>
+                    name="last_description">{{ isset($trade) && $trade ? $trade->last_description : ''}}</textarea>
             </div>
 
             <div>
